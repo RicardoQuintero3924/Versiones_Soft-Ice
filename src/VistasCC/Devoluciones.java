@@ -20,7 +20,8 @@ public final class Devoluciones extends javax.swing.JFrame {
 
     int Kcarga = 0;
     
-
+ //hola 
+ //hola 
     public Devoluciones() {
         initComponents();
         Cargabd();
