@@ -779,9 +779,10 @@ public class Despacho extends javax.swing.JFrame {
     private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
         descargafecha();
         consultaRuta();
-        comparaPlanilla();
+        //comparaPlanilla(); se quita temporalmente mientras se soluciona el problema de las planillas
+        despachaPlanilla();
         actualizaPantalla();
-      
+        
     }//GEN-LAST:event_btnguardarActionPerformed
 
     private void btncancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelarActionPerformed
