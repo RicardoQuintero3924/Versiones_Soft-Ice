@@ -601,6 +601,7 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
         }
     }//REGISTRA LAS SALIDAS DEL PLASTICO DE LA BODEGA
 
+    
     public void actualizarEntrada() {
 
         String refe = Referencia.getSelectedItem().toString();

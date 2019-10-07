@@ -112,7 +112,6 @@ public final class Cavas extends javax.swing.JFrame {
     int Ig2 = 0;
     int Fres3 = 0;
     int diferencia;
-
     // aqui terminan las variables globales para inventarioInicial()
     public Cavas() {
         initComponents();
@@ -175,6 +174,9 @@ public final class Cavas extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "GUARDADO CON EXITO");
 
     }//ingresa el inventario final de la cava 
+    
+    //crear metodo para guardar el inventario final de la cava del turno tres. 
+    // public void guardaFinal(){}
 
     public void insertaInicial() {
         Calendar fecha = new GregorianCalendar();
@@ -196,7 +198,6 @@ public final class Cavas extends javax.swing.JFrame {
     }//inserta el inventario inicial de la cava
 
     public void extraeProduccion() {
-
         String extraeCantidad = "SELECT cantidad  FROM produccion WHERE referencia = 'POLAR 2 KILOS' AND fecha BETWEEN '" + txtfecha.getText() + " " + cbxdesde.getSelectedItem() + "' AND '" + txthasta.getText() + " " + cbxhasta.getSelectedItem() + "'";
         try {
             Connection con = Conexion.conectar("mysql");

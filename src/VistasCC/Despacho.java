@@ -49,12 +49,9 @@ public class Despacho extends javax.swing.JFrame {
         Cargabd();
         CargaReferencia();
         cargaplanilla();
-
         this.cbxturno.addItem("Turno 1");
         this.cbxturno.addItem("Turno 2");
         this.cbxturno.addItem("Turno 3");
-        
-
     }
 
     @SuppressWarnings("unchecked")
@@ -306,6 +303,7 @@ public class Despacho extends javax.swing.JFrame {
                 tbconsulta.getColumnModel().getColumn(4).setPreferredWidth(150);
             }
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "ERROR SOFT-ICE: "+e);
         }
     }
 
@@ -339,8 +337,6 @@ public class Despacho extends javax.swing.JFrame {
             ResultSet rs = st.executeQuery(consul);
             while (rs.next()) {
                 fecha = rs.getString("fecha");
-
-             
             }
         } catch (SQLException e) {
 
@@ -420,7 +416,6 @@ public class Despacho extends javax.swing.JFrame {
         Date fecha = cal.getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         fechasis = sdf.format(fecha);
-
     }
 
     public void sumaDespachos() {
@@ -519,20 +514,20 @@ public class Despacho extends javax.swing.JFrame {
         int mes = fecha.get(Calendar.MONTH);
         int dia = fecha.get(Calendar.DAY_OF_MONTH);
         int diaB = fecha.get(Calendar.DAY_OF_MONTH);
+        
         mes = mes + 1;
         String turno = cbxturno.getSelectedItem().toString();
         if (turno.equals("Turno 1")) {
             diaB = diaB - 1;
-            String Consult = "SELECT turno,nroruta,referencia,cantidad,despachado_por,planilla FROM despachos WHERE  fecha BETWEEN '" + año + "-" + mes + "-" + diaB + " 21:00:00' AND '" + año + "-" + mes + "-" + dia + " 05:00:00'";
+            String Consult = "SELECT turno,nroruta,referencia,cantidad,despachado_por,planilla FROM despachos WHERE  fecha BETWEEN '" + año + "-" + mes + "-" + diaB + " 21:00:00' AND '" + año + "-" + mes + "-" + dia + " 05:00:00' AND planilla = '"+txtplanilla.getText()+"'";
             ConsultaDespacho(Consult);
         } else {
             if (turno.equals("Turno 2")) {
-                String Consult = "SELECT turno,nroruta,referencia,cantidad,despachado_por,planilla FROM despachos WHERE  fecha BETWEEN '" + año + "-" + mes + "-" + dia + " 05:00:00' AND '" + año + "-" + mes + "-" + dia + " 13:00:00'";
+                String Consult = "SELECT turno,nroruta,referencia,cantidad,despachado_por,planilla FROM despachos WHERE  fecha BETWEEN '" + año + "-" + mes + "-" + dia + " 05:00:00' AND '" + año + "-" + mes + "-" + dia + " 13:00:00' AND planilla =' "+txtplanilla.getText()+"'";
                 ConsultaDespacho(Consult);
             } else {
                 if (turno.equals("Turno 3")) {
-                    String Consult = "SELECT turno,nroruta,referencia,cantidad,despachado_por,planilla FROM despachos WHERE  fecha BETWEEN '" + año + "-" + mes + "-" + dia + " 13"
-                            + ":00:00' AND '" + año + "-" + mes + "-" + dia + " 21:00:00'";
+                    String Consult = "SELECT turno,nroruta,referencia,cantidad,despachado_por,planilla FROM despachos WHERE  fecha BETWEEN '" + año + "-" + mes + "-" + dia + " 13:00:00' AND '" + año + "-" + mes + "-" + dia + " 21:00:00' AND planilla =' "+txtplanilla.getText()+"'";
                     ConsultaDespacho(Consult);
                 }
             }
@@ -765,9 +760,6 @@ public class Despacho extends javax.swing.JFrame {
        String cant = txtcantidad.getText();
        int cantidad = Integer.parseInt(cant);
        String ref = cbxreferencia.getSelectedItem().toString();
-       
-     
-     
     }
     
     

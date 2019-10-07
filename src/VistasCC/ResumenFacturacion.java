@@ -177,7 +177,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.out.println(e);
         }**/
-        String extrae1 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'POLAR 3 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String extrae1 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'POLAR 3 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -188,7 +188,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
             }
         } catch (SQLException e) {
         }
-        String extrae2 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'POLAR 12 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String extrae2 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'POLAR 12 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -212,7 +212,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
          * }
          * } catch (SQLException e) { }*
          */
-        String extrae4 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'POLAR 20 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String extrae4 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'POLAR 20 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -223,7 +223,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
             }
         } catch (SQLException e) {
         }
-        String extrae5 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'ESCAMA 20 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String extrae5 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'ESCAMA 20 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -256,7 +256,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
          * }
          * } catch (SQLException e) { }*
          */
-        String extrae8 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'IGLU 7 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String extrae8 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'IGLU 7 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -279,7 +279,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
          * }
          * } catch (SQLException e) { }*
          */
-        String extrae10 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'PARRANDA 2 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String extrae10 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'PARRANDA 2 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -302,7 +302,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
          * }
          * } catch (SQLException e) { }*
          */
-        String extrae12 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'FRESCAMPO 2 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String extrae12 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'FRESCAMPO 2 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -313,7 +313,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
             }
         } catch (SQLException e) {
         }
-        String extrae13 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'IGLU CILINDRO 20 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String extrae13 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'IGLU CILINDRO 20 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -324,7 +324,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
             }
         } catch (SQLException e) {
         }
-        String extrae14 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'IGLU 15 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String extrae14 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'IGLU 15 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -335,7 +335,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
             }
         } catch (SQLException e) {
         }
-        String extrae15 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'IGLU 3 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String extrae15 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'IGLU 3 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -358,7 +358,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
          * }
          * } catch (SQLException e) { }*
          */
-        String extrae17 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'FRESCAMPO 3 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String extrae17 = "SELECT SUM(cantidad) AS CANTIDAD  FROM despachos WHERE nroruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND referencia = 'FRESCAMPO 3 KILOS' AND fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -388,7 +388,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.out.println(e);
         }**/
-        String consul1 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%POLAR 3%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String consul1 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%POLAR 3%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -400,7 +400,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.out.println(e);
         }
-        String consul2 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%POLAR 12%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String consul2 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%POLAR 12%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -423,7 +423,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
          * while(rs.next()){ Polar15 = rs.getInt("CANTIDAD"); } } catch
          * (SQLException e) { System.out.println(e); }*
          */
-        String consul4 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%POLAR 20%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String consul4 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%POLAR 20%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -435,7 +435,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.out.println(e);
         }
-        String consul5 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%ESCAMA 20%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String consul5 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%ESCAMA 20%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -468,7 +468,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
          * }
          * } catch (SQLException e) { System.out.println(e); }*
          */
-        String consul8 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%IGLU 7%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String consul8 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%IGLU 7%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -492,7 +492,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
          * }
          * } catch (SQLException e) { System.out.println(e); }*
          */
-        String consul10 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%PARRANDA 2%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String consul10 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%PARRANDA 2%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -516,7 +516,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
          * }
          * } catch (SQLException e) { System.out.println(e); }*
          */
-        String consul12 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%FRESCAMPO 2%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String consul12 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%FRESCAMPO 2%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -528,7 +528,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.out.println(e);
         }
-        String consul13 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%IGLU 20 KG%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String consul13 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%IGLU 20 KG%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -541,7 +541,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.out.println(e);
         }
-        String consul14 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%IGLU 15%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String consul14 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%IGLU 15%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -553,7 +553,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.out.println(e);
         }
-        String consul15 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%IGLU 3%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String consul15 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%IGLU 3%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
@@ -586,7 +586,7 @@ public final class ResumenFacturacion extends javax.swing.JFrame {
          * }
          * } catch (SQLException e) { System.out.println(e); }*
          */
-        String consul17 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%FRESCAMPO 3%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + "' AND '" + txthasta.getText() + "'";
+        String consul17 = "SELECT SUM(Cantidad) AS CANTIDAD FROM venta WHERE Producto LIKE '%FRESCAMPO 3%' AND Ruta LIKE '%" + cbxruta.getSelectedItem() + "%' AND  Fecha BETWEEN '" + txtdesde.getText() + " 00:00:00' AND '" + txthasta.getText() + " 23:59:59'";
         try {
             Connection con = Conexion.conectar("mysql");
             Statement st = con.createStatement();
