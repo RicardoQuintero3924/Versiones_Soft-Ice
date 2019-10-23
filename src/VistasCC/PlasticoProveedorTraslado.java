@@ -17,9 +17,8 @@ import java.util.GregorianCalendar;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
-
 public class PlasticoProveedorTraslado extends javax.swing.JFrame {
-    
+
     String opc;
     int entrada = 0;
     int salida = 0;
@@ -37,6 +36,7 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
 
         this.TipoMovimiento.addItem("ENTRADA");
         this.TipoMovimiento.addItem("SALIDA");
+        this.cbxproveedores.setEnabled(false);
 
 //implementar hora...
         Calendar cal = Calendar.getInstance();
@@ -103,7 +103,7 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
                 ResultSet rs = st.executeQuery(entr);
                 while (rs.next()) {
                     entrada = rs.getInt("TOTALCANTIDAD");
-                    
+
                 }
             } catch (SQLException e) {
                 System.out.println(e);
@@ -339,7 +339,7 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
     }//REGISTRA LAS ENTRADAS DE PLASTICO A LA BODEGA DE PLASTICO
 
     public void restaEntrada() {
-         String Polar2 = "POLAR 2 KILOS";
+        String Polar2 = "POLAR 2 KILOS";
         String Polar3 = "POLAR 3 KILOS";
         String Polar12 = "POLAR 12 KILOS";
         String Mini = "IGLU 500 GRAMOS";
@@ -366,7 +366,6 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
                 ResultSet rs = st.executeQuery(entr);
                 while (rs.next()) {
                     resta = rs.getInt("TOTALCANTIDAD");
-                    System.out.println("entrada " + resta);
                 }
             } catch (SQLException e) {
                 System.out.println(e);
@@ -601,23 +600,62 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
         }
     }//REGISTRA LAS SALIDAS DEL PLASTICO DE LA BODEGA
 
-    
-    public void actualizarEntrada() {
+    public void proveedores() {
 
+        String prove = "";
+
+        if (TipoMovimiento.equals("SALIDA")) {
+            cbxproveedores.setEnabled(true);
+            prove = cbxproveedores.getSelectedItem().toString();
+            System.out.println("proveedor: " + prove);
+        }
+
+    }
+
+    public void actualizarEntrada() {
         String refe = Referencia.getSelectedItem().toString();
         String movi = TipoMovimiento.getSelectedItem().toString();
+        String prov = Salida.getSelectedItem().toString();
 
-        if (movi.equals("ENTRADA")) {
+        if (movi.equals("ENTRADA") && (prov.equals("POLIEMPAK"))) {
             entra = Integer.parseInt(txtCantidad.getText());
             int operacion = entrada - resta;
             int entradas = operacion + entra;
             try {
                 Connection con = Conexion.conectar("mysql");
                 Statement st = con.createStatement();
-                st.execute("INSERT INTO entraplas SET cantidad =" + entradas + ", referencia='" + refe + "'");
+                st.execute("INSERT INTO entraplas SET cantidad =" + entradas + ", referencia='" + refe + "', proveedor = '" + prov + "'");
             } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Error Soft-Ice BDPlas: " + e);
             }
             // System.out.println("suma " + entra + " referencia " + refe + " entrada " + entrada +" total "+ entradas + " restas "+ resta );
+
+        } else {
+            if (movi.equals("ENTRADA") && (prov.equals("TUBOPLAST"))) {
+                entra = Integer.parseInt(txtCantidad.getText());
+                int operacion = entrada - resta;
+                int entradas = operacion + entra;
+                try {
+                    Connection con = Conexion.conectar("mysql");
+                    Statement st = con.createStatement();
+                    st.execute("INSERT INTO entraplas SET cantidad =" + entradas + ", referencia='" + refe + "', proveedor = '" + prov + "'");
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, "Error Soft-Ice BDPlas: " + e);
+                }
+            } else {
+                if (movi.equals("ENTRADA") && (prov.equals("PLASTICOS UNION"))) {
+                    entra = Integer.parseInt(txtCantidad.getText());
+                    int operacion = entrada - resta;
+                    int entradas = operacion + entra;
+                    try {
+                        Connection con = Conexion.conectar("mysql");
+                        Statement st = con.createStatement();
+                        st.execute("INSERT INTO entraplas SET cantidad =" + entradas + ", referencia='" + refe + "', proveedor = '" + prov + "'");
+                    } catch (SQLException e) {
+                        JOptionPane.showMessageDialog(null, "Error Soft-Ice BDPlas: " + e);
+                    }
+                }
+            }
         }
     }//ACTUALIZA LAS ENTRADAS DE PLASTICO REFLEJANDOLAS EN ENTRAPLAS
 
@@ -672,7 +710,7 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
     }
 
     public void promedioEmpaque() {
-         String Polar2 = "POLAR 2 KILOS";
+        String Polar2 = "POLAR 2 KILOS";
         String Polar3 = "POLAR 3 KILOS";
         String Polar12 = "POLAR 12 KILOS";
         String Mini = "IGLU 500 GRAMOS";
@@ -943,21 +981,21 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
                                                                                 saldos(promedio);
                                                                                 insertaAlerta(refe, cd, cm, cad, cam);
 
-                                                                            }else{
+                                                                            } else {
                                                                                 if (refe.equals(Reempaque)) {
-                                                                                conexion(prome);
-                                                                                cm = aux / 12;
-                                                                                cd = cm / 30;
-                                                                                cad = (int) (cd * 0.30);
-                                                                                pcam = (int) (cm * 0.30);
-                                                                                cam = cm + pcam;
-                                                                                promedio = cd + cad;
-                                                                                alerta = promedio * 30;
-                                                                                alertaEmpaque(alerta);
-                                                                                saldos(promedio);
-                                                                                insertaAlerta(refe, cd, cm, cad, cam);
+                                                                                    conexion(prome);
+                                                                                    cm = aux / 12;
+                                                                                    cd = cm / 30;
+                                                                                    cad = (int) (cd * 0.30);
+                                                                                    pcam = (int) (cm * 0.30);
+                                                                                    cam = cm + pcam;
+                                                                                    promedio = cd + cad;
+                                                                                    alerta = promedio * 30;
+                                                                                    alertaEmpaque(alerta);
+                                                                                    saldos(promedio);
+                                                                                    insertaAlerta(refe, cd, cm, cad, cam);
 
-                                                                            }
+                                                                                }
                                                                             }
                                                                         }
                                                                     }
@@ -1024,11 +1062,11 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
                 }
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "ERROR Soft-Ice"+ e);
+            JOptionPane.showMessageDialog(null, "ERROR Soft-Ice" + e);
         }
 
     }
-    
+
     public void insertaAlerta(String refe, int cd, int cm, int cad, int cam) {
         String scrip = "INSERT INTO alertasplas SET referencia = '" + refe + "', mes = " + cm + ", dia =" + cd + ","
                 + "prodia =" + promedio + ", promes =" + cam + ", diadu=" + saldodias + ", color='" + color + "'";
@@ -1041,11 +1079,13 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
         }
 
     }
+
     @Override
-     public Image getIconImage() {
+    public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("imagen/iglu.png"));
         return retValue;
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -1071,6 +1111,7 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         txtlote = new javax.swing.JTextField();
         btnconsultar = new javax.swing.JButton();
+        cbxproveedores = new javax.swing.JComboBox<>();
 
         btnConsultar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnConsultar.setText("CONSULTAR");
@@ -1177,6 +1218,8 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
             }
         });
 
+        cbxproveedores.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PROVEEDORES" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -1193,9 +1236,9 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(hora))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(81, 81, 81)
+                        .addGap(84, 84, 84)
                         .addComponent(btnguardar)
-                        .addGap(79, 79, 79)
+                        .addGap(76, 76, 76)
                         .addComponent(btnconsultar)
                         .addGap(57, 57, 57)
                         .addComponent(btncancelar))
@@ -1218,14 +1261,16 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
                             .addComponent(Referencia, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel9)
-                    .addComponent(txtCantidad)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
-                    .addComponent(txtremision)
-                    .addComponent(jLabel11)
-                    .addComponent(txtlote))
-                .addGap(91, 91, 91))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel9)
+                        .addComponent(txtCantidad)
+                        .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+                        .addComponent(txtremision)
+                        .addComponent(jLabel11)
+                        .addComponent(txtlote))
+                    .addComponent(cbxproveedores, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(54, 54, 54))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1239,35 +1284,37 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5)
                 .addGap(41, 41, 41)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Referencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(53, 53, 53)
+                .addGap(31, 31, 31)
+                .addComponent(jLabel10)
+                .addGap(4, 4, 4)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel6))
+                    .addComponent(jLabel6)
+                    .addComponent(txtremision, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(TipoMovimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtlote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
+                .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtremision, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TipoMovimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(55, 55, 55)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtlote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Salida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                    .addComponent(Salida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxproveedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnguardar)
                     .addComponent(btncancelar)
                     .addComponent(btnconsultar))
-                .addGap(76, 76, 76))
+                .addGap(52, 52, 52))
         );
 
         pack();
@@ -1287,7 +1334,7 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
 
     private void btnconsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnconsultarActionPerformed
         // TODO add your handling code here:
-       new ConsultaPlastico().setVisible(true);
+        new ConsultaPlastico().setVisible(true);
     }//GEN-LAST:event_btnconsultarActionPerformed
 
     private void btncancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelarActionPerformed
@@ -1307,6 +1354,15 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
             }
         }
 
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            if (this.TipoMovimiento.getSelectedIndex() == 2) {
+                this.cbxproveedores.setEnabled(true);
+                this.cbxproveedores.addItem("POLIEMPAK");
+                this.cbxproveedores.addItem("TUBOPLAS");
+                this.cbxproveedores.addItem("PLASTICOS UNION");
+            }
+        }
+
     }//GEN-LAST:event_TipoMovimientoItemStateChanged
 
     public String[] getEntrada(String Salida) {
@@ -1318,14 +1374,14 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
             EntraSal[2] = "PLASTICOS UNION";
             EntraSal[3] = "CARTAGENA";
             EntraSal[4] = "BOGOTA";
-           
+
         }
         if (Salida.equalsIgnoreCase("Salida")) {
             EntraSal[0] = "PLANTA SUR";
             EntraSal[1] = "PRODUCCION";
             EntraSal[2] = "BOGOTA";
             EntraSal[3] = "CARTAGENA";
-            
+
         }
         return EntraSal;
     }
@@ -1456,6 +1512,7 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
     private javax.swing.JButton btncancelar;
     private javax.swing.JButton btnconsultar;
     private javax.swing.JButton btnguardar;
+    private javax.swing.JComboBox<String> cbxproveedores;
     private javax.swing.JLabel fecha;
     private javax.swing.JLabel hora;
     private javax.swing.JLabel jLabel1;
