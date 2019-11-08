@@ -1,6 +1,8 @@
 package VistasCC;
 
+import Beans.BeansEntraPlas;
 import Beans.BeansPlasticoProveedorTraslados;
+import Beans.ReferenciasMedellin;
 import Bussines.BussinesLogic;
 import DAO.DAOPlasticoProveedorTraslado;
 import Utils.Conexion;
@@ -12,13 +14,17 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 public class PlasticoProveedorTraslado extends javax.swing.JFrame {
 
+    ArrayList Referencias = new ArrayList();
+    ArrayList Cantidades = new ArrayList();
     String opc;
     int entrada = 0;
     int salida = 0;
@@ -32,11 +38,13 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
 
     public PlasticoProveedorTraslado() {
         initComponents();
+        Referencias();
+        cantidades();
         Cargabd();
 
         this.TipoMovimiento.addItem("ENTRADA");
         this.TipoMovimiento.addItem("SALIDA");
-        this.cbxproveedores.setEnabled(false);
+        this.proveedores.setEnabled(false);
 
 //implementar hora...
         Calendar cal = Calendar.getInstance();
@@ -75,7 +83,115 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
         txtlote.setText("");
     }
 
+    //crear array para manejo de referencias
+    public ArrayList Referencias() {
+
+        String query = "SELECT nombre FROM referenciasmedellin";
+        try {
+            Connection con = Conexion.conectar("mysql");
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+                String nombre = rs.getString("nombre");
+                Referencias.add(nombre);
+            }
+
+            return Referencias;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "ERROR SOFT-ICE " + e);
+        }
+
+        return null;
+    }
+    public ArrayList cantidades() {
+        String query = "SELECT cantidad,referencia,proveedor FROM entraplas";
+        try {
+            Connection con = Conexion.conectar("mysql");
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+                int cantidad = rs.getInt("cantidad");
+                String cant = Integer.toString(cantidad);
+                String refe = rs.getString("referencia");
+                String prov = rs.getString("proveedor");
+                Cantidades.add(0, cant);
+                Cantidades.add(1, refe);
+                Cantidades.add(2, prov);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "ERROR SOFT-ICE " + e);
+        }
+        return Cantidades;
+    }
+    public void EntradaPlastico(String c, String r,String p){
+        String referencia = Referencia.getSelectedItem().toString();
+        String proveedor  = Salida.getSelectedItem().toString();
+        
+        if(referencia.equals(r)&& proveedor.equals(p)){
+        int saldo = Integer.parseInt(c);
+        String Entrada = txtCantidad.getText();
+        int ingresa = Integer.parseInt(Entrada);
+        int opera = saldo + ingresa;
+        System.out.println("ingresa "+ ingresa+ " operacion "+ opera);
+        String query = "UPDATE entraplas SET cantidad = '"+opera+"' WHERE referencia ='"+r+"' AND proveedor = '"+p+"'";
+        try {
+            Connection con = Conexion.conectar("mysql");
+            Statement st = con.createStatement();
+            st.execute(query);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null,"SOFT-ICE ERROR: " +e);
+        }
+        DAO();
+        } 
+    }
+    public void SalidaPlastico(String c, String r,String p){
+        String referencia = Referencia.getSelectedItem().toString();
+        String proveedor  = proveedores.getSelectedItem().toString(); 
+        if(referencia.equals(r)&& proveedor.equals(p)){
+        int saldo = Integer.parseInt(c);
+        String Entrada = txtCantidad.getText();
+        int Salida = Integer.parseInt(Entrada);
+        int opera = saldo - Salida;
+        System.out.println("ingresa "+ Salida + " operacion "+ opera);
+        String query = "UPDATE entraplas SET cantidad = '"+opera+"' WHERE referencia ='"+r+"' AND proveedor = '"+p+"'";
+        try {
+            Connection con = Conexion.conectar("mysql");
+            Statement st = con.createStatement();
+            st.execute(query);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null,"SOFT-ICE ERROR: " +e);
+        }
+        DAO();
+        } 
+    }
+    public void Validador() {
+       String can ;
+       String ref;
+       String pro;
+       for(int i = 0; i < Referencias.size();i++){
+           for(int j = 0; j < Cantidades.size();j++){
+               if(Referencias.get(i).equals(Cantidades.get(j))){
+                   //System.out.println(" ELEMENTO REFERENCIA ["+Referencias.get(i)+"] ELEMENTO CANTIDAD ["+Cantidades.get(j)+"]");
+                    can = (String) Cantidades.get(j-1);
+                    ref = (String) Cantidades.get(j);
+                    pro = (String) Cantidades.get(j+1);
+                    System.out.println("cantidad ["+ can+ "] Referencia ["+ref+"] Proveedor ["+pro+"]");
+                    String tm = TipoMovimiento.getSelectedItem().toString();
+                    if(tm.equals("ENTRADA")){
+                        EntradaPlastico(can,ref,pro);
+                    }else{
+                        SalidaPlastico(can,ref,pro);
+                    }
+               }
+           }
+       }
+     
+      
+      
+        }
+
     public void sumaEntrada() {
+
         String Polar2 = "POLAR 2 KILOS";
         String Polar3 = "POLAR 3 KILOS";
         String Polar12 = "POLAR 12 KILOS";
@@ -605,8 +721,8 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
         String prove = "";
 
         if (TipoMovimiento.equals("SALIDA")) {
-            cbxproveedores.setEnabled(true);
-            prove = cbxproveedores.getSelectedItem().toString();
+            proveedores.setEnabled(true);
+            prove = proveedores.getSelectedItem().toString();
             System.out.println("proveedor: " + prove);
         }
 
@@ -617,7 +733,7 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
         String movi = TipoMovimiento.getSelectedItem().toString();
         String prov = Salida.getSelectedItem().toString();
 
-        if (movi.equals("ENTRADA") && (prov.equals("POLIEMPAK"))) {
+        if (prov.equals("POLIEMPAK")) {
             entra = Integer.parseInt(txtCantidad.getText());
             int operacion = entrada - resta;
             int entradas = operacion + entra;
@@ -631,7 +747,7 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
             // System.out.println("suma " + entra + " referencia " + refe + " entrada " + entrada +" total "+ entradas + " restas "+ resta );
 
         } else {
-            if (movi.equals("ENTRADA") && (prov.equals("TUBOPLAST"))) {
+            if (prov.equals("TUBOPLAST")) {
                 entra = Integer.parseInt(txtCantidad.getText());
                 int operacion = entrada - resta;
                 int entradas = operacion + entra;
@@ -643,7 +759,7 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Error Soft-Ice BDPlas: " + e);
                 }
             } else {
-                if (movi.equals("ENTRADA") && (prov.equals("PLASTICOS UNION"))) {
+                if (prov.equals("PLASTICOS UNION")) {
                     entra = Integer.parseInt(txtCantidad.getText());
                     int operacion = entrada - resta;
                     int entradas = operacion + entra;
@@ -1111,7 +1227,7 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         txtlote = new javax.swing.JTextField();
         btnconsultar = new javax.swing.JButton();
-        cbxproveedores = new javax.swing.JComboBox<>();
+        proveedores = new javax.swing.JComboBox<>();
 
         btnConsultar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnConsultar.setText("CONSULTAR");
@@ -1218,7 +1334,7 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
             }
         });
 
-        cbxproveedores.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PROVEEDORES" }));
+        proveedores.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PROVEEDORES" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1269,7 +1385,7 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
                         .addComponent(txtremision)
                         .addComponent(jLabel11)
                         .addComponent(txtlote))
-                    .addComponent(cbxproveedores, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(proveedores, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(54, 54, 54))
         );
         layout.setVerticalGroup(
@@ -1308,7 +1424,7 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Salida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbxproveedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(proveedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnguardar)
@@ -1325,11 +1441,13 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
     }//GEN-LAST:event_txtremisionActionPerformed
 
     private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
-        restaEntrada();
-        sumaEntrada();
-        actualizarEntrada();
-        saldosMenores();
+        //restaEntrada();
+        //sumaEntrada();
+        //actualizarEntrada();
+        //saldosMenores();
         //promedioEmpaque();
+        //cantidades();
+        Validador();
     }//GEN-LAST:event_btnguardarActionPerformed
 
     private void btnconsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnconsultarActionPerformed
@@ -1340,7 +1458,6 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
     private void btncancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelarActionPerformed
         // TODO add your handling code here:
         System.exit(0);
-
     }//GEN-LAST:event_btncancelarActionPerformed
 
     private void TipoMovimientoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_TipoMovimientoItemStateChanged
@@ -1356,10 +1473,10 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
 
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             if (this.TipoMovimiento.getSelectedIndex() == 2) {
-                this.cbxproveedores.setEnabled(true);
-                this.cbxproveedores.addItem("POLIEMPAK");
-                this.cbxproveedores.addItem("TUBOPLAS");
-                this.cbxproveedores.addItem("PLASTICOS UNION");
+                this.proveedores.setEnabled(true);
+                this.proveedores.addItem("POLIEMPAK");
+                this.proveedores.addItem("TUBOPLAST");
+                this.proveedores.addItem("PLASTICOS UNION");
             }
         }
 
@@ -1377,8 +1494,8 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
 
         }
         if (Salida.equalsIgnoreCase("Salida")) {
-            EntraSal[0] = "PLANTA SUR";
-            EntraSal[1] = "PRODUCCION";
+            EntraSal[0] = "PRODUCCION PLANTA SUR";
+            EntraSal[1] = "PRODUCCION PLANTA PPAL";
             EntraSal[2] = "BOGOTA";
             EntraSal[3] = "CARTAGENA";
 
@@ -1394,6 +1511,27 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
             if (this.TipoMovimiento.getSelectedIndex() == 2) {
                 String Seleccion = (String) Salida.getSelectedItem();
                 if (this.Salida.getSelectedIndex() == 1) {
+
+                    opc = (String) JOptionPane.showInputDialog(this, "SELECCIONE EL TURNO", "TURNO ENTREGA", JOptionPane.INFORMATION_MESSAGE, null, turno, null);
+
+                    try {
+                        Connection con = Conexion.conectar("mysql");
+                        Statement st = con.createStatement();
+                        st.executeUpdate("INSERT INTO turno SET descripcion = '" + opc + "', referencia = '" + Referencia.getSelectedItem().toString() + "'");
+                        // AND referencia = '" + Referencia.getSelectedItem().toString() + "'");
+
+                    } catch (SQLException ex) {
+                        System.out.println(ex);
+
+                    }
+
+                }
+            }
+        }
+         if (evt.getStateChange() == ItemEvent.SELECTED) {
+            if (this.TipoMovimiento.getSelectedIndex() == 2) {
+                String Seleccion = (String) Salida.getSelectedItem();
+                if (this.Salida.getSelectedIndex() == 0) {
 
                     opc = (String) JOptionPane.showInputDialog(this, "SELECCIONE EL TURNO", "TURNO ENTREGA", JOptionPane.INFORMATION_MESSAGE, null, turno, null);
 
@@ -1512,7 +1650,6 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
     private javax.swing.JButton btncancelar;
     private javax.swing.JButton btnconsultar;
     private javax.swing.JButton btnguardar;
-    private javax.swing.JComboBox<String> cbxproveedores;
     private javax.swing.JLabel fecha;
     private javax.swing.JLabel hora;
     private javax.swing.JLabel jLabel1;
@@ -1524,6 +1661,7 @@ public class PlasticoProveedorTraslado extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JComboBox<String> proveedores;
     private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtlote;
     private javax.swing.JTextField txtremision;
